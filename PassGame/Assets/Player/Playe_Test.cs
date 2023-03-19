@@ -9,6 +9,8 @@ public class Playe_Test : MonoBehaviour
     [SerializeField]
     private float moveLength;
 
+    public Transform dribblePos;
+
     private Vector2 initialPosition;
 
     void Start()
