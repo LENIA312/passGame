@@ -18,6 +18,8 @@ public class EnemyManager : MonoBehaviour
     {
         Vector3 pos = gameObject.transform.position;
 
-        gameObject.transform.position = new Vector2(pos.x,pos.y -= moveSpeed);  // À•W‚ğİ’è
+        //gameObject.transform.position = new Vector2(pos.x,pos.y -= moveSpeed);  // À•W‚ğİ’è
+
+        GetComponent<Rigidbody2D>().velocity = Vector2.down * moveSpeed;
     }
 }

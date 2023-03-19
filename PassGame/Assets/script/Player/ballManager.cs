@@ -7,7 +7,14 @@ namespace passGame {
     {
         [SerializeField] float ballSpeed;
 
-        state ballState;
+        [SerializeField] AudioClip passSE = default;
+
+        [SerializeField] AudioClip boundSE = default;
+
+        [SerializeField] AudioSource audioSource = default;
+
+        [HideInInspector] public state ballState;
+
         GameObject currentHitObject;
 
         // ボールのステータス
@@ -17,6 +24,8 @@ namespace passGame {
             dribble,
             pass,
             miss,
+            goal,
+            brock,
         }
 
         // ボールの初期化
@@ -49,6 +58,11 @@ namespace passGame {
             {
                 transform.position = currentHitObject.GetComponent<Playe_Test>().dribblePos.position;
             }
+
+            if (currentHitObject != null && ballState == state.brock)
+            {
+                transform.position = currentHitObject.GetComponent<slidingManager>().ballPos.position;
+            }
         }
 
         // ボール発射、ターゲットのポジション方向に移動
@@ -61,6 +75,8 @@ namespace passGame {
 
             // 弾に速度を与える
             GetComponent<Rigidbody2D>().velocity = shotForward * ballSpeed;
+
+            audioSource.PlayOneShot(passSE);
         }
 
         // マウスのクリック座標取得
@@ -95,6 +111,7 @@ namespace passGame {
 
                 case state.pass:
                 case state.miss:
+                case state.brock:
                     value = false;
                     break;
                 default:
@@ -113,8 +130,7 @@ namespace passGame {
             if (collision.name == outareaDefine.outAreaR ||
                 collision.name == outareaDefine.outAreaL)
             {
-                ballState = state.miss;
-                Debug.Log($"miss");
+                Missing();
             }
 
             // player hit judge
@@ -141,12 +157,44 @@ namespace passGame {
                 Destroy(this.gameObject);
                 ballState = state.miss;
             }
+
+            // goal hit judge
+            collision.TryGetComponent<GoalManager>(out GoalManager goal);
+            if (goal != null && ballState == state.pass)
+            {
+                Destroy(this.gameObject);
+                ballState = state.goal;
+            }
+
+            collision.TryGetComponent<slidingManager>(out slidingManager slide);
+            if (slide != null)
+            {
+                currentHitObject = collision.gameObject;
+                ballState = state.brock;
+            }
         }
 
         // ball status return
         public state GetBallState()
         {
             return ballState;
+        }
+
+        public bool GetHavingPlayer()
+        {
+            return currentHitObject.GetComponent<Playe_Test>().playerCheck;
+        }
+
+        void OnBecameInvisible()
+        {
+            //Missing();
+        }
+
+        void Missing()
+        {
+            audioSource.PlayOneShot(boundSE);
+            ballState = state.miss;
+            Debug.Log($"miss");
         }
     }
 }
