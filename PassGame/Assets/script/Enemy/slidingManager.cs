@@ -7,7 +7,7 @@ public class slidingManager : MonoBehaviour
 {
     [SerializeField] public Transform ballPos;
 
-    float slidingSpeed = 10f;
+    float slidingSpeed = 15f;
     bool havingFlg;
 
     public void Setup(ballManager ball)
