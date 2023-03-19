@@ -128,7 +128,9 @@ namespace passGame {
 
             // outarea
             if (collision.name == outareaDefine.outAreaR ||
-                collision.name == outareaDefine.outAreaL)
+                collision.name == outareaDefine.outAreaL ||
+                collision.name == outareaDefine.outAreaD ||
+                collision.name == outareaDefine.outAreaU )
             {
                 Missing();
             }

@@ -100,7 +100,7 @@ namespace passGame
                 waitTime -= Time.deltaTime;
                 countdownText.text = $"{(int)waitTime}";
 
-                if (waitTime <= 0)
+                if (waitTime <= 1)
                 {
                     Destroy(countdownText.gameObject);
                     gameState = gameStatus.game;
