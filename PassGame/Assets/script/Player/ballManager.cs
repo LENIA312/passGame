@@ -138,6 +138,7 @@ namespace passGame {
             collision.TryGetComponent<EnemyManager>(out EnemyManager enemy);
             if(enemy != null)
             {
+                Destroy(this.gameObject);
                 ballState = state.miss;
             }
         }
