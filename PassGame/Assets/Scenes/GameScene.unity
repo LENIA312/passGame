@@ -843,7 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9714296d169cecd44b316a3bcfbb0968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
   moveLength: 4
   playerCheck: 1
   dribblePos: {fileID: 1077265677}
