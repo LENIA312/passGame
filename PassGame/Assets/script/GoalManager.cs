@@ -6,6 +6,8 @@ public class GoalManager : MonoBehaviour
 {
     float moveSpeed = 5f;
 
+    private float Defspeed = 5f;
+
     bool moving;
 
     public void Setup()
@@ -27,6 +29,6 @@ public class GoalManager : MonoBehaviour
 
     public void SetMoveFlg(bool flg)
     {
-        moveSpeed = 0;
+        moveSpeed = flg == false ? 0 : Defspeed;
     }
 }

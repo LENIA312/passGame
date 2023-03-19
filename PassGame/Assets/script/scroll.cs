@@ -6,7 +6,11 @@ public class scroll : MonoBehaviour
 {
     private float speed = 5f;
 
+    private float Defspeed = 5f;
+
     bool moving = true;
+
+
 
     void Update()
     {
@@ -23,6 +27,6 @@ public class scroll : MonoBehaviour
     }
     public void SetMoveFlg(bool flg)
     {
-        speed = 0;
+        speed = flg == false ? 0 : Defspeed;
     }
 }

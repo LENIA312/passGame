@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace passGame
 {
@@ -32,11 +33,16 @@ namespace passGame
 
         [SerializeField] AudioClip goalWhistleSE = default;
 
+        [SerializeField] float gameWaitTime;
+
+        [SerializeField] Text countdownText = default; 
+
         private const float START = 0.0f;
         private const float INTERVAL = 2.0f;
 
         float time;
         float dribbleTime;
+        float waitTime;
 
         gameStatus gameState;
         drribleStatus drribleState;
@@ -68,18 +74,52 @@ namespace passGame
 
             ball.Setup(ballManager.state.dribble, firstTouchPlayer.gameObject);
 
-            InvokeRepeating("UpdateMakePrefab", START, INTERVAL);
             time = 0;
             dribbleTime = 0;
+            waitTime = gameWaitTime;
 
-            gameState = gameStatus.game;
+            gameState = gameStatus.wait;
             drribleState = drribleStatus.can;
-
         }
 
         // Update is called once per frame
         void Update()
         {
+            if(gameState == gameStatus.wait)
+            {
+                foreach (var player in players)
+                {
+                    player.SetMoveFlg(false);
+                }
+
+                foreach (var bgs in bg)
+                {
+                    bgs.SetMoveFlg(false);
+                }
+
+                waitTime -= Time.deltaTime;
+                countdownText.text = $"{(int)waitTime}";
+
+                if (waitTime <= 0)
+                {
+                    Destroy(countdownText.gameObject);
+                    gameState = gameStatus.game;
+
+                    // move
+                    foreach (var player in players)
+                    {
+                        player.SetMoveFlg(true);
+                    }
+
+                    foreach (var bgs in bg)
+                    {
+                        bgs.SetMoveFlg(true);
+                    }
+                    InvokeRepeating("UpdateMakePrefab", START, INTERVAL);
+
+                }
+            }
+
             if (gameState == gameStatus.goalChance)
             {
                 // ƒS[ƒ‹’âŽ~
