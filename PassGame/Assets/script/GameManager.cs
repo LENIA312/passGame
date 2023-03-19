@@ -19,12 +19,18 @@ namespace passGame
         private const float START = 0.0f;
         private const float INTERVAL = 2.0f;
 
+        float time;
+
         // Start is called before the first frame update
         void Start()
         {
-            ball.Setup(ballManager.state.dribble,firstTouchPlayer.gameObject);
+            Application.targetFrameRate = 120; //60FPSに設定
+            GameEnd();
+
+            ball.Setup(ballManager.state.dribble, firstTouchPlayer.gameObject);
 
             InvokeRepeating("UpdateMakePrefab", START, INTERVAL);
+            time = 0;
         }
 
         // Update is called once per frame
@@ -32,15 +38,28 @@ namespace passGame
         {
             var currentState = ball.GetBallState();
             missWindow.SetActive(currentState == ballManager.state.miss);
-        }
 
+            time += Time.deltaTime;
+            if (time > 60f)
+            {
+                // ゴールを生成
+            }
+        }
 
         private void UpdateMakePrefab()
         {
 
             //Instantiate(enemyObjecy, new Vector3(Random.Range(-5.0f, 5.0f), 0,0), Quaternion.identity);
-            var enemy = Instantiate(enemyObject, new Vector3(0, 5.74f,0), Quaternion.identity);
+            var enemy = Instantiate(enemyObject, new Vector3(0, 5.74f, 0), Quaternion.identity);
             enemy.Setup(moveSpeedEnemy);
+        }
+
+        void GameEnd()
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();//ゲームプレイ終了
+            }
         }
     }
 }
