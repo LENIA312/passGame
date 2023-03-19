@@ -20,15 +20,10 @@ namespace passGame {
         }
 
         // ボールの初期化
-        public void Setup(state state)
+        public void Setup(state state,GameObject defaultHitObject)
         {
             ballState = state;
-            currentHitObject = null;
-        }
-
-        private void Start()
-        {
-            Setup(state.none);
+            currentHitObject = defaultHitObject;
         }
 
         // Update is called once per frame
@@ -45,15 +40,9 @@ namespace passGame {
             {
                 BallPositionUpdate();
             }
-
-            // debug
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ballState = ballState == state.dribble ? state.pass : state.dribble;
-                Debug.Log($"currentState : {ballState}");
-            }
         }
 
+        // ボールの座標更新、ドリブル中に呼ばれる
         void BallPositionUpdate()
         {
             if (currentHitObject != null && ballState == state.dribble)
@@ -116,9 +105,11 @@ namespace passGame {
             return value;
         }
 
+        // object hit
         private void OnTriggerEnter2D(Collider2D collision)
         {
 
+            // outarea
             if (collision.name == outareaDefine.outAreaR ||
                 collision.name == outareaDefine.outAreaL)
             {
@@ -126,6 +117,7 @@ namespace passGame {
                 Debug.Log($"miss");
             }
 
+            // player hit judge
             collision.TryGetComponent<Playe_Test>(out Playe_Test comp);
             if (comp != null)
             {
@@ -141,15 +133,16 @@ namespace passGame {
                     Debug.Log($"hitPlayer");
                 }
             }
+
+            // enemy hit judge
+            collision.TryGetComponent<EnemyManager>(out EnemyManager enemy);
+            if(enemy != null)
+            {
+                ballState = state.miss;
+            }
         }
 
-        Vector3 GethitPoint()
-        {
-            Vector3 target = Vector3.zero;
-
-            return target;
-        }
-
+        // ball status return
         public state GetBallState()
         {
             return ballState;

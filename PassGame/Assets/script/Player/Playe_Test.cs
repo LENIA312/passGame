@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Playe_Test : MonoBehaviour
+namespace passGame
 {
-    [SerializeField]
-    private float speed;
-    [SerializeField]
-    private float moveLength;
-
-    public Transform dribblePos;
-
-    private Vector2 initialPosition;
-
-    void Start()
+    public class Playe_Test : MonoBehaviour
     {
-        initialPosition = transform.position;
-    }
+        [SerializeField]
+        private float speed;
+        [SerializeField]
+        private float moveLength;
 
-    void Update()
-    {
-        transform.position = new Vector2(initialPosition.x, Mathf.Sin(Time.time * speed) * moveLength + initialPosition.y);
+        public Transform dribblePos;
+
+        private Vector2 initialPosition;
+
+        void Start()
+        {
+            initialPosition = transform.position;
+        }
+
+        void Update()
+        {
+            transform.position = new Vector2(initialPosition.x, Mathf.Sin(Time.time * speed) * moveLength + initialPosition.y);
+        }
     }
 }
