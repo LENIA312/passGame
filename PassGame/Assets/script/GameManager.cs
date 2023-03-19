@@ -157,7 +157,7 @@ namespace passGame
                 missWindow.SetActive(currentState == ballManager.state.miss);
 
                 time += Time.deltaTime;
-                if (time > 1f)
+                if (time > 60f)
                 {
                     // ƒS[ƒ‹‚ð¶¬
                     if (goalObj == null)
